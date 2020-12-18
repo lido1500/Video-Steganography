@@ -43,6 +43,7 @@ def store_frame(frames_path, count, each_frame):
 # Method to Encrypt Secret into frames, takes two parameters input_string and directory where frames stored
 def encode_string(input_string, frame_path):
     f_name = frame_path
+    # Using stegano Lib lsg.hide to Encrypt secret in frame
     secret_enc = lsb.hide(f_name, input_string)
     secret_enc.save(f_name)
     print("[INFO] frame {} holds {}".format(f_name, input_string))
@@ -51,6 +52,7 @@ def encode_string(input_string, frame_path):
 # Method to Decrypt Secret stored in frames and print secret, takes one parameters i.e directory where frames stored
 def decode_string(frame_direc):
     f_name = frame_direc
+    # Using stegano Lib lsg.reveal to Decrypt secret from frame
     secret_dec = lsb.reveal(f_name)
     print("YOUR SECRET MESSAGE: ", secret_dec)
 
