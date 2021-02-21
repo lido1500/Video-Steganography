@@ -1,71 +1,55 @@
 import os
+from subprocess import call, STDOUT
+
 import cv2 as cv
 from stegano import lsb
 
-vid = cv.VideoCapture('video.mp4')
+from encdec import encoding, decoding
+from extraction import video, audio
+
+ext_vid = video
+ext_aud = audio
+encode = encoding
 
 
-# Method to Create Frames
-def create_frames(frame_path):
-    # Initial variable count
-    count_frames = 0
-    # Open Video and while Vid is Opened perform Operations
-    while vid.isOpened():
-        # Read Video Frame by Frame and store in frame Variable
-        # Success stores whether or not we got a frame, it is a boolean parameter
-        success, frame = vid.read()
-        # if frame is read correctly success is True
-        if not success:
-            print("Can't receive frame (stream end?). Exiting ...")
-            break
-        # Create each frame of video and store in a directory, calls create_frame method
-        store_frame(frame_path, count_frames, frame)
-        # Increment frame count, this variable counts how many frames are there
-        count_frames += 1
-        # We can also see frames as bytes
-        print(frame.tobytes())
+def final_stitching(frame_path, audio_path):
+    # Stitch frames together
+    call(["ffmpeg", "-i", frame_path + "%d.png", "-vcodec", "png", frame_path + "video.mp4", "-y"],
+         stdout=open(os.devnull, "w"),
+         stderr=STDOUT)
 
-        # Display Video in a window
-        cv.imshow('frame', frame)
-        # Press Q to Exit and Close Window
-        if cv.waitKey(1) == ord('q'):
-            break
-    # Release Video and Close Opened Windows after Video ends.
-    vid.release()
-    cv.destroyAllWindows()
+    # Add audio to video
+    call(
+        ["ffmpeg", "-i", frame_path + "video.mp4", "-i", audio_path + "audio.mp3", "-codec", "copy",
+         frame_path + "video.mp4", "-y"],
+        stdout=open(os.devnull, "w"), stderr=STDOUT)
 
 
-# Method to Create Frames From Video and Store in a Directory
-def store_frame(frames_path, count, each_frame):
-    cv.imwrite(os.path.join(frames_path, "{:d}.png".format(count)), each_frame)
-
-
-# Method to Encrypt Secret into frames, takes two parameters input_string and directory where frames stored
-def encode_string(input_string, frame_path):
-    f_name = frame_path
-    # Using stegano Lib lsg.hide to Encrypt secret in frame
-    secret_enc = lsb.hide(f_name, input_string)
-    secret_enc.save(f_name)
-    print("[INFO] frame {} holds {}".format(f_name, input_string))
-
-
-# Method to Decrypt Secret stored in frames and print secret, takes one parameters i.e directory where frames stored
-def decode_string(frame_direc):
-    f_name = frame_direc
-    # Using stegano Lib lsg.reveal to Decrypt secret from frame
-    secret_dec = lsb.reveal(f_name)
-    print("YOUR SECRET MESSAGE: ", secret_dec)
+def final_decoding(frame_direc):
+    return ''
 
 
 # This is from where the program execution begins
 if __name__ == '__main__':
     # Initialize a temp directory to store video frames and provide a path
-    temp_folder = '/Users/pasang/vid_frames'
-    # Extracts frames from video and store in a directory
-    create_frames(temp_folder)
+    temp_folder = '/Users/tchiringlama/extraction/video_frames/'
+    embed_message = 'THIS_IS_A_SECRET_MESSAGE'
 
-    # Encrypt frames that are stored in the directory
-    encode_string("THIS IS A SECRET MESSAGE", temp_folder)
+    audio_store = '/Users/tchiringlama/extraction/audio/'
+
+    # audio = '/Users/tchiringlama/PycharmProjects/Video-Steganography/'
+    audio = '/Users/tchiringlama/airplane.mp4'
+    store = '/Users/tchiringlama/extraction/audio/'
+
+    # Extracts frames from video and store in a directory
+    # ext_vid.create_frames(temp_folder)
+    # ext_aud.extract_audio(audio, store)
+
+    # encode.encode_string(input_string=embed_message, root=temp_folder)
+
+    # Encode message and create video
+    # final_stitching(frame_path=temp_folder, audio_path=audio_store)
 
     # Decrypt frames and display secret
-    decode_string(temp_folder)
+    decode = decoding
+    decode.decode_string(temp_folder)

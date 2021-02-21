@@ -1,4 +1,5 @@
 import math
+import os
 
 from stegano import lsb
 
@@ -22,16 +23,10 @@ def split_string(s_str, count=10):
 
 
 def encode_string(input_string, root):
+    # for file in os.listdir(root):
+    #     if file.endswith(".jpg"):
     split_string_list = split_string(input_string)
-    # for i in range(0, len(split_string_list)):
-    # f_name = "{}frame{}.jpg".format(root, i)
-    f_name = root
-    # secret_enc = lsb.hide(f_name, split_string_list[i])
-    secret_enc = lsb.hide(f_name, input_string)
-    secret_enc.save(f_name)
-    # print("[INFO] frame {} holds {}".format(f_name, split_string_list[i]))
-    print("[INFO] frame {} holds {}".format(f_name, input_string))
-
-
-if __name__ == "__main__":
-    encode_string('secret', '/Users/pasang/vid_frames/0.png')
+    for i in range(1, len(split_string_list)):
+        secret_enc = lsb.hide("{}{}.png".format(root, i), split_string_list[i])
+        secret_enc.save("{}{}.png".format(root, i))
+        print("[INFO] frame {} holds {}".format(i, split_string_list[i]))
