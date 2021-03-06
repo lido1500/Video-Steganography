@@ -100,13 +100,11 @@ class Ui_MainWindow(object):
         self.decrypt = QtWidgets.QWidget()
         self.decrypt.setObjectName("decrypt")
 
-
         self.dec_upload = QtWidgets.QPushButton(self.decrypt)
         self.dec_upload.setGeometry(QtCore.QRect(20, 110, 101, 31))
         self.dec_upload.setText("Upload")
         self.dec_upload.setObjectName("dec_upload")
         self.dec_upload.clicked.connect(self.dec_getValues)
-
 
         self.dec_lbl_sec_key = QtWidgets.QLabel(self.decrypt)
         self.dec_lbl_sec_key.setGeometry(QtCore.QRect(20, 20, 81, 16))
@@ -116,7 +114,6 @@ class Ui_MainWindow(object):
         self.btn_dec.setGeometry(QtCore.QRect(240, 160, 113, 32))
         self.btn_dec.setObjectName("btn_dec")
         self.btn_dec.clicked.connect(self.dec_btn_handler)
-
 
         self.dec_lbl_video = QtWidgets.QLabel(self.decrypt)
         self.dec_lbl_video.setGeometry(QtCore.QRect(20, 90, 91, 16))
@@ -182,7 +179,12 @@ class Ui_MainWindow(object):
         dec_sec_msg_h = self.dec_sec_key
         dec_path_h = self.dec_path
 
-        execute.decode_string(video=dec_path_h)
+        dec_sec_msg = execute.decode_string(video=dec_path_h)
+        self.w1 = QtWidgets.QMessageBox()
+        self.w1.setIcon(QtWidgets.QMessageBox.Information)
+        final_dec_sec_msg = 'Secret: ' + dec_sec_msg
+        self.w1.setText(final_dec_sec_msg)
+        self.w1.show()
 
 
 if __name__ == "__main__":

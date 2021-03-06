@@ -66,6 +66,7 @@ def decode_string(video):
 
     print(''.join([i for i in secret]))
     clean_tmp()
+    return str(secret)
 
 
 def clean_tmp(path="./tmp"):
