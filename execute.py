@@ -74,9 +74,10 @@ def clean_tmp(path="./tmp"):
         print("[INFO] tmp files are cleaned up")
 
 
-def main():
-    input_string = input("Enter the input string :")
-    f_name = input("enter the name of video")
+def main(input_string, f_name):
+    # input_string = input("Enter the input string :")
+    # f_name = input("enter the name of video")
+
     frame_extraction(f_name)
     call(["ffmpeg", "-i", f_name, "-q:a", "0", "-map", "a", "tmp/audio.mp3", "-y"], stdout=open(os.devnull, "w"),
          stderr=STDOUT)
@@ -91,14 +92,14 @@ def main():
     clean_tmp()
 
 
-if __name__ == "__main__":
-    while True:
-        print("1.Hide a message in video 2.Reveal the secret from video")
-        print("any other value to exit")
-        choice = input()
-        if choice == '1':
-            main()
-        elif choice == '2':
-            decode_string(input("enter the name of video with extension"))
-        else:
-            break
+# if __name__ == "__main__":
+#     while True:
+#         print("1.Hide a message in video 2.Reveal the secret from video")
+#         print("any other value to exit")
+#         choice = input()
+#         if choice == '1':
+#             main()
+#         elif choice == '2':
+#             decode_string(input("enter the name of video with extension"))
+#         else:
+#             break
