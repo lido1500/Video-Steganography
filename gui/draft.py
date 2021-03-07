@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
 import execute
+from aes.aes_enc import AESCipher
 
 
 class Ui_MainWindow(object):
@@ -166,9 +167,12 @@ class Ui_MainWindow(object):
 
     def enc_btn_handler(self):
         sec_msg_h = self.sec_msg
+        sec_key_h = self.sec_key
+        aes = AESCipher(key=sec_key_h)
+        final_sec_msg_h = aes.encrypt(plain_text=sec_msg_h)
         path_h = self.path
-
-        execute.main(input_string=sec_msg_h, f_name=path_h)
+        print("ENCRYPTED MSG: ", final_sec_msg_h)
+        execute.main(input_string=final_sec_msg_h, f_name=path_h)
 
     def dec_getValues(self):
         self.dec_sec_key = self.dec_line_sec_key.text()
@@ -176,14 +180,23 @@ class Ui_MainWindow(object):
         pass
 
     def dec_btn_handler(self):
-        dec_sec_msg_h = self.dec_sec_key
+        dec_sec_key_h = self.dec_sec_key
         dec_path_h = self.dec_path
 
-        dec_sec_msg = execute.decode_string(video=dec_path_h)
+        dec_sec_msg_list = execute.decode_string(video=dec_path_h)
+        print("ENCRYPTED MSG: ", str(dec_sec_msg_list))
+
+        dec_str = ""
+        for i in dec_sec_msg_list:
+            dec_str = dec_str + i
+
+        aes = AESCipher(key=dec_sec_key_h)
+        final_dec_sec_msg_h = aes.decrypt(encrypted_text=dec_str)
+
         self.w1 = QtWidgets.QMessageBox()
         self.w1.setIcon(QtWidgets.QMessageBox.Information)
-        final_dec_sec_msg = 'Secret: ' + dec_sec_msg
-        self.w1.setText(final_dec_sec_msg)
+        pop_up_msg = 'Secret: ' + final_dec_sec_msg_h
+        self.w1.setText(pop_up_msg)
         self.w1.show()
 
 
