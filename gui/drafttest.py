@@ -15,13 +15,17 @@ import execute
 from aes.aes_enc import AESCipher
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(403, 511)
-        MainWindow.setMinimumSize(QtCore.QSize(403, 511))
-        MainWindow.setMaximumSize(QtCore.QSize(403, 511))
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_MainWindow(QtWidgets.QMainWindow):
+
+    def __init__(self):
+        super(Ui_MainWindow, self).__init__()
+
+        self.setObjectName("MainWindow")
+        self.resize(403, 511)
+        self.setMinimumSize(QtCore.QSize(403, 511))
+        self.setMaximumSize(QtCore.QSize(403, 511))
+
+        self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setEnabled(True)
@@ -122,30 +126,28 @@ class Ui_MainWindow(object):
         self.dec_line_sec_key.setGeometry(QtCore.QRect(20, 50, 311, 21))
         self.dec_line_sec_key.setObjectName("dec_line_sec_key")
         self.tabWidget.addTab(self.decrypt, "")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Steganator"))
-        self.enc_lbl_sec_msg.setText(_translate("MainWindow", "Secret Message"))
-        self.enc_lbl_sec_key.setText(_translate("MainWindow", "Secret Key"))
-        self.enc_lbl_video.setText(_translate("MainWindow", "Video"))
-        self.enc_btn_upload.setText(_translate("MainWindow", "Upload"))
-        self.btn_enc.setText(_translate("MainWindow", "Encrypt"))
-        self.enc_lbl_vid_id.setText(_translate("MainWindow", "Video ID"))
-        self.enc_lbl_vid_tag.setText(_translate("MainWindow", "Video Tag"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.encrypt), _translate("MainWindow", "Encrypt Video"))
-        self.dec_lbl_sec_key.setText(_translate("MainWindow", "Secret Key"))
-        self.btn_dec.setText(_translate("MainWindow", "Decrypt"))
-        self.dec_lbl_video.setText(_translate("MainWindow", "Video"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.decrypt), _translate("MainWindow", "Decrypt Video"))
+        self.setWindowTitle(_translate("Ui_MainWindow", "Steganator"))
+        self.enc_lbl_sec_msg.setText(_translate("Ui_MainWindow", "Secret Message"))
+        self.enc_lbl_sec_key.setText(_translate("Ui_MainWindow", "Secret Key"))
+        self.enc_lbl_video.setText(_translate("Ui_MainWindow", "Video"))
+        self.enc_btn_upload.setText(_translate("Ui_MainWindow", "Upload"))
+        self.btn_enc.setText(_translate("Ui_MainWindow", "Encrypt"))
+        self.enc_lbl_vid_id.setText(_translate("Ui_MainWindow", "Video ID"))
+        self.enc_lbl_vid_tag.setText(_translate("Ui_MainWindow", "Video Tag"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.encrypt), _translate("Ui_MainWindow", "Encrypt Video"))
+        self.dec_lbl_sec_key.setText(_translate("Ui_MainWindow", "Secret Key"))
+        self.btn_dec.setText(_translate("Ui_MainWindow", "Decrypt"))
+        self.dec_lbl_video.setText(_translate("Ui_MainWindow", "Video"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.decrypt), _translate("Ui_MainWindow", "Decrypt Video"))
 
     # def enc_btn_upload_handler(self):
     #     print("BUTTON PRESSED")
@@ -190,6 +192,7 @@ class Ui_MainWindow(object):
             dec_str = dec_str + i
 
         aes = AESCipher(key=dec_sec_key_h)
+        print("DEC_STR", dec_str)
         final_dec_sec_msg_h = aes.decrypt(encrypted_text=dec_str)
 
         self.w1 = QtWidgets.QMessageBox()
