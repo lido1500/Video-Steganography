@@ -17,9 +17,10 @@ from aes.aes_enc import AESCipher
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
 
-    def __init__(self):
+    def __init__(self, username):
         super(Ui_MainWindow, self).__init__()
 
+        self.username = username
         self.setObjectName("MainWindow")
         self.resize(403, 511)
         self.setMinimumSize(QtCore.QSize(403, 511))
@@ -165,7 +166,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.sec_key = self.enc_line_sec_key.text()
         self.path = self.open_dialog_box()
         pass
-
+        # return [self.vid_id, self.vid_tag, self.sec_key, self.sec_key]
+        # return {"vid_id": self.vid_id, "vid_tag": self.vid_tag, "sec_key": self.sec_key, "sec_msg": self.sec_msg}
+    
     def enc_btn_handler(self):
         sec_msg_h = self.sec_msg
         sec_key_h = self.sec_key

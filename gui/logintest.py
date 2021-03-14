@@ -65,19 +65,18 @@ class Login(QtWidgets.QDialog):
         QtCore.QMetaObject.connectSlotsByName(self)
         # self.user_list = self.login_btn_handler()
 
-    # def login_getValues(self):
-    #     self.user_name = self.line_usrname.text()
-    #     self.user_password = self.line_pwd.text()
-    #     pass
+    def login_getValues(self):
+        user_name = self.line_usrname.text()
+        user_password = self.line_pwd.text()
+        return {"username": user_name, "userpass": user_password}
 
     def login_btn_handler(self):
-
         self.w1 = QtWidgets.QMessageBox()
-
-        user_name = self.line_usrname.text()
-        user_pass = self.line_pwd.text()
-        print(user_name + " " + user_pass)
-        user_list = get_postgres_con.connect(username=user_name, password=user_pass)
+        login_val_dict = self.login_getValues()
+        username = login_val_dict["username"]
+        userpass = login_val_dict["userpass"]
+        print(username + "  "+ userpass)
+        user_list = get_postgres_con.connect(username=username, password=userpass)
         if len(user_list) == 1:
             self.accept()
             return user_list
@@ -94,8 +93,8 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     login = Login()
     if (login.exec_()) == QtWidgets.QDialog.Accepted:
-        print("ACCEPTED")
-        window = Ui_MainWindow()
+        print("ACCEPTED", login.login_getValues())
+        window = Ui_MainWindow(username=login.login_getValues()["username"])
         window.show()
         sys.exit(app.exec_())
     else:
