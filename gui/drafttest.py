@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
 import execute
+from db.get_postgres_con import insert
 from aes.aes_enc import AESCipher
 
 
@@ -168,15 +169,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         pass
         # return [self.vid_id, self.vid_tag, self.sec_key, self.sec_key]
         # return {"vid_id": self.vid_id, "vid_tag": self.vid_tag, "sec_key": self.sec_key, "sec_msg": self.sec_msg}
-    
+
     def enc_btn_handler(self):
         sec_msg_h = self.sec_msg
         sec_key_h = self.sec_key
+        vid_id_h = self.vid_id
+        vid_tag_h = self.vid_tag
         aes = AESCipher(key=sec_key_h)
         final_sec_msg_h = aes.encrypt(plain_text=sec_msg_h)
         path_h = self.path
-        print("ENCRYPTED MSG: ", final_sec_msg_h)
+
         execute.main(input_string=final_sec_msg_h, f_name=path_h)
+
+        insert(username=self.username, vid_id=vid_id_h, vid_tag=vid_tag_h, sec_key=sec_key_h, sec_msg=sec_msg_h)
 
     def dec_getValues(self):
         self.dec_sec_key = self.dec_line_sec_key.text()

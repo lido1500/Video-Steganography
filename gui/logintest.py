@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from db import get_postgres_con
 from gui.drafttest import Ui_MainWindow
+from gui.signup import SignUp
 
 
 class Login(QtWidgets.QDialog):
@@ -49,6 +50,8 @@ class Login(QtWidgets.QDialog):
         self.btn_signup = QtWidgets.QPushButton('Login', self)
         self.btn_signup.setGeometry(QtCore.QRect(150, 170, 113, 32))
         self.btn_signup.setObjectName("btn_signup")
+        self.btn_signup.clicked.connect(self.login_signup_btn_handler)
+
         self.btn_forgotpwd = QtWidgets.QPushButton('Login', self)
         self.btn_forgotpwd.setGeometry(QtCore.QRect(150, 210, 191, 32))
         self.btn_forgotpwd.setObjectName("btn_forgotpwd")
@@ -65,6 +68,8 @@ class Login(QtWidgets.QDialog):
         QtCore.QMetaObject.connectSlotsByName(self)
         # self.user_list = self.login_btn_handler()
 
+        # self.signup_dialog = SignUp()
+
     def login_getValues(self):
         user_name = self.line_usrname.text()
         user_password = self.line_pwd.text()
@@ -75,7 +80,7 @@ class Login(QtWidgets.QDialog):
         login_val_dict = self.login_getValues()
         username = login_val_dict["username"]
         userpass = login_val_dict["userpass"]
-        print(username + "  "+ userpass)
+        print(username + "  " + userpass)
         user_list = get_postgres_con.connect(username=username, password=userpass)
         if len(user_list) == 1:
             self.accept()
@@ -85,6 +90,13 @@ class Login(QtWidgets.QDialog):
             pop_up_msg = 'Login Credentials Incorrect!'
             self.w1.setText(pop_up_msg)
             self.w1.show()
+
+    def login_signup_btn_handler(self):
+        print("CLICKED SIGNUP")
+        signup_dialog = SignUp()
+        signup_dialog.exec()
+        signup_dialog.show()
+        signup_dialog.close()
 
 
 if __name__ == "__main__":
@@ -99,35 +111,3 @@ if __name__ == "__main__":
         sys.exit(app.exec_())
     else:
         print("WE ARE IN ELSE")
-
-# app = QtWidgets.QApplication(sys.argv)
-# Dialog = QtWidgets.QDialog()
-# ui = Login()
-# ui.setupUi(Dialog)
-# Dialog.show()
-# if (app.exec_()) == Dialog.Accepted:
-#     print("ACCEPTED")
-# else:
-#     print(Dialog.Accepted)
-#     print("WE ARE IN ELSE")
-
-
-# sys.exit(app.exec_())
-
-# steganoapp = QtWidgets.QApplication(sys.argv)
-# MainWindow = QtWidgets.QMainWindow()
-# ui = Ui_MainWindow()
-# ui.setupUi(MainWindow)
-# MainWindow.show()
-# sys.exit(steganoapp.exec_())
-
-# MainWindow = QtWidgets.QMainWindow()
-# ui = Ui_MainWindow()
-# ui.setupUi(MainWindow)
-# MainWindow.show()
-
-# app = QtWidgets.QApplication(sys.argv)
-# MainWindow = QtWidgets.QMainWindow()
-# ui = Ui_MainWindow()
-# ui.setupUi(MainWindow)
-# MainWindow.show()
