@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from db import get_postgres_con
 from gui.drafttest import Ui_MainWindow
 from gui.signup import SignUp
+from gui.fp import ForgotPass
 
 
 class Login(QtWidgets.QDialog):
@@ -55,6 +56,7 @@ class Login(QtWidgets.QDialog):
         self.btn_forgotpwd = QtWidgets.QPushButton('Login', self)
         self.btn_forgotpwd.setGeometry(QtCore.QRect(150, 210, 191, 32))
         self.btn_forgotpwd.setObjectName("btn_forgotpwd")
+        self.btn_forgotpwd.clicked.connect(self.fp_btn_handler)
 
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Login", "Connect"))
@@ -95,8 +97,17 @@ class Login(QtWidgets.QDialog):
         print("CLICKED SIGNUP")
         signup_dialog = SignUp()
         signup_dialog.exec()
-        signup_dialog.show()
+        # signup_dialog.show()
         signup_dialog.close()
+        self.focusWidget()
+
+    def fp_btn_handler(self):
+        print("CLICKED FORGOT PASSWORD")
+        fp_dialog = ForgotPass()
+        fp_dialog.exec()
+        # signup_dialog.show()
+        fp_dialog.close()
+        self.focusWidget()
 
 
 if __name__ == "__main__":

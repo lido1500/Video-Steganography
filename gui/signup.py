@@ -124,6 +124,10 @@ class SignUp(QtWidgets.QDialog):
             self.w2.show()
         else:
             insert_signup(fname, lname, email, user_name, user_pass)
+            self.w2.setIcon(QtWidgets.QMessageBox.Information)
+            pop_up_msg = 'SignUp Successful!'
+            self.w2.setText(pop_up_msg)
+            self.w2.show()
 
         # check and insert signup values to database and show pop up
         # self.close()

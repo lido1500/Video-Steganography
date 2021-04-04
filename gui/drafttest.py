@@ -133,7 +133,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.statusbar.setObjectName("statusbar")
         self.setStatusBar(self.statusbar)
 
-        self.tabWidget.setCurrentIndex(1)
+        # Uncomment to force 2nd tab to appear first
+        # self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(self)
 
         _translate = QtCore.QCoreApplication.translate
