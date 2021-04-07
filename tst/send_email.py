@@ -21,16 +21,16 @@ def random_pass():
 
 def send_mail(receiver_email):
     new_pass = random_pass()
-    message = """\
-    From: {}
-    Subject: Important! Password Reset!
+    message = f'''\
+From: {sender_email}
+Subject: Important! Password Reset!
+    
+Greeting from Video Steganography. You have requested for a password reset.
 
-    Greeting from Video Steganography. You have requested for a password reset.
+Your new Password is : {new_pass}
 
-    Your new Password is : {}
-
-    Please change this password after logging in.
-    """.format(sender_email, new_pass)
+Please change this password after logging in.
+    '''
 
     # message = """From: From Person <from@fromdomain.com>
     # To: To Person <to@todomain.com>
@@ -39,15 +39,10 @@ def send_mail(receiver_email):
     # This is a test e-mail message.
     # """
 
-    # message = MIMEMultipart("alternative")
-    # message["From"] = sender_email
-    # message["To"] = receiver_email
-    # message["Subject"] = subject
-    # message.attach(MIMEText(body, "plain"))
-
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message)
 
-# if __name__ == '__main__':
-#     random_pass()
+
+if __name__ == '__main__':
+    send_mail('tchiring08@gmail.com')
