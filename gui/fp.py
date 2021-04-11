@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from tst.send_email import send_mail
+from db.get_postgres_con import check_user
 
 
 class ForgotPass(QtWidgets.QDialog):
@@ -82,12 +83,23 @@ class ForgotPass(QtWidgets.QDialog):
     def resetpass_btn_handler(self):
         fp_val_dict = self.forgotpass_getValues()
         email_id = fp_val_dict['email']
-        send_mail(email_id)
-        self.w2 = QtWidgets.QMessageBox()
-        self.w2.setIcon(QtWidgets.QMessageBox.Information)
-        pop_up_msg = 'Password Reset Email Sent!'
-        self.w2.setText(pop_up_msg)
-        self.w2.show()
+        user_name = fp_val_dict['username']
+
+        # Check if user exists in database
+        if len(check_user(username=user_name, email=email_id)) > 0:
+            # password update
+            send_mail(email_id)
+            self.w2 = QtWidgets.QMessageBox()
+            self.w2.setIcon(QtWidgets.QMessageBox.Information)
+            pop_up_msg = 'Password Reset Email Sent!'
+            self.w2.setText(pop_up_msg)
+            self.w2.show()
+        else:
+            self.w2 = QtWidgets.QMessageBox()
+            self.w2.setIcon(QtWidgets.QMessageBox.Warning)
+            pop_up_msg = 'User does not exists'
+            self.w2.setText(pop_up_msg)
+            self.w2.show()
 
 
 if __name__ == "__main__":
