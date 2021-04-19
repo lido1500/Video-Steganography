@@ -35,6 +35,7 @@
 # check_list()
 import math
 import os
+import uuid
 
 
 def loop_folder():
@@ -66,7 +67,9 @@ def split_string(s_str, count=10):
 
 
 if __name__ == '__main__':
-    split_string_list = split_string('testingstring')
-    for i in range(0, len(split_string_list)):
-        print(split_string_list[i])
-    loop_folder()
+    print("The random id using uuid1() is : ", end="")
+    print(uuid.uuid1())
+    # split_string_list = split_string('testingstring')
+    # for i in range(0, len(split_string_list)):
+    #     print(split_string_list[i])
+    # loop_folder()
