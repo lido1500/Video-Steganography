@@ -43,8 +43,6 @@ def connect(username, password):
 
         # display the PostgreSQL database server version
         user_list = cur.fetchall()
-        print(len(user_list))
-        print(user_list)
         # close the communication with the PostgreSQL
         cur.close()
         return user_list
@@ -71,7 +69,6 @@ def insert(username, vid_id, vid_tag, sec_key, sec_msg):
         cur = conn.cursor()
 
         # execute a statement
-        # cur.execute(f'SELECT * from user_details where user_name = \'{username}\' and user_pass = \'{password}\'')
         insert_stmt = f'INSERT INTO video_details (id, vid_id, vid_tag, sec_key, sec_msg, user_name) VALUES (\'{uuid.uuid1()}\', {vid_id}, \'{vid_tag}\', \'{sec_key}\', \'{sec_msg}\', \'{username}\')'
         print("Inserting TO Database ")
         cur.execute(insert_stmt)
@@ -104,7 +101,6 @@ def insert_signup(firstname, lastname, emailadd, set_username, password):
         cur = conn.cursor()
 
         # execute a statement
-        # cur.execute(f'SELECT * from user_details where user_name = \'{username}\' and user_pass = \'{password}\'')
         insert_stmt = f'INSERT INTO user_details (user_name, user_pass, first_name, last_name, email_id ) VALUES ({set_username}, \'{password}\', ' \
                       f'\'{firstname}\', \'{lastname}\', \'{emailadd}\')'
         print("Inserting TO Database ")
@@ -138,7 +134,6 @@ def reset_pass(email_add, username, password):
         cur = conn.cursor()
 
         # execute a statement
-        # cur.execute(f'SELECT * from user_details where user_name = \'{username}\' and user_pass = \'{password}\'')
         stmt = f'UPDATE user_details SET user_pass = \'{password}\' WHERE user_name = \'{username}\' AND email_id = \'{email_add}\';'
         print("Updating User Password!")
         cur.execute(stmt)
@@ -172,13 +167,11 @@ def check_user(username, email):
         cur = conn.cursor()
 
         # execute a statement
-        print("Checking IF User Exists?")
+        print("Checking IF User Exists for Password Reset?")
         cur.execute(f'SELECT * from user_details where user_name = \'{username}\' and email_id = \'{email}\'')
 
         # display the PostgreSQL database server version
         user = cur.fetchall()
-        print(len(user))
-        print(user)
         # close the communication with the PostgreSQL
         cur.close()
         return user
@@ -206,7 +199,7 @@ def get_values_video_details(username):
         cur = conn.cursor()
 
         # execute a statement
-        print("Checking IF User Exists?")
+        print("Get Data from Video Details Table")
         cur.execute(f'SELECT * from video_details where user_name = \'{username}\'')
 
         # display the PostgreSQL database server version

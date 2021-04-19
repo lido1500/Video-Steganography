@@ -83,10 +83,6 @@ class SignUp(QtWidgets.QDialog):
         self.lbl_confirmpassword.setText(_translate("SignUp", "Confirm Password"))
         self.lbl_setusername.setText(_translate("SignUp", "Set username"))
         self.btn_signup.setText(_translate("SignUp", "Sign Up"))
-        # self.setFocus()
-        # self.activateWindow()
-
-        # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
     def signup_getValues(self):
         firstname = self.line_firstname.text()
@@ -111,7 +107,6 @@ class SignUp(QtWidgets.QDialog):
         user_pass = signup_val_dict["password"]
         confirm_user_pass = signup_val_dict["confirmpassword"]
 
-        print(user_pass + " = " + confirm_user_pass)
         if user_pass != confirm_user_pass:
             self.w2.setIcon(QtWidgets.QMessageBox.Warning)
             pop_up_msg = 'Passwords do not match!'
